@@ -10,9 +10,9 @@
      +-----------------------------+-------------------------------+
 ```
 
-# Cryptography and Network Security  BCSE309L
+# Cryptography and Network Security 
 
-Socket-based implementations of core cryptographic algorithms, built as part of the BCSE309L course. Each module runs a client-server pair over localhost to demonstrate encryption, decryption, hashing, and digital signatures.
+Socket-based implementations of core cryptographic algorithms, built as part of the course. Each module runs a client-server pair over localhost to demonstrate encryption, decryption, hashing, and digital signatures.
 
 ---
 
