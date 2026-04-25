@@ -1,22 +1,78 @@
+<!-- HEADER ANIMATION -->
+<div align="center">
+
 ```
-+--------+     plaintext      +----------+     ciphertext     +--------+
-|        | -----------------> |          | -----------------> |        |
-| SENDER |                    |  CIPHER  |                    |  RECV  |
-|        | <----------------- |          | <----------------- |        |
-+--------+     decrypted      +----------+       key          +--------+
-     |                             |                               |
-     |        [RSA / AES / DES]    |        [MD5 / SHA / HMAC]    |
-     |        [ElGamal / DSS]      |        [Digital Signatures]  |
-     +-----------------------------+-------------------------------+
+ +---------+                                          +---------+
+ |         |   H e l l o   W o r l d                 |         |
+ | SENDER  | ------>------>------>------>-----------> | RECEIVER|
+ |         |         [ENCRYPTING...]                  |         |
+ +---------+               |                          +---------+
+                           v
+              +------------+------------+
+              |                         |
+              |   C I P H E R   C O R E |
+              |                         |
+              |  RSA   AES   DES        |
+              |  ElGamal   DSS          |
+              |  MD5   SHA   HMAC       |
+              |                         |
+              +------------+------------+
+                           |
+                           v
+ +---------+                                          +---------+
+ |         |   7f3a9c...  [CIPHERTEXT]                |         |
+ | SENDER  | <------<------<------<------<----------- | RECEIVER|
+ |         |         [DECRYPTING...]                  |         |
+ +---------+                                          +---------+
 ```
+
+```
+  plaintext                key                  ciphertext
+     |                      |                       |
+     v                      v                       v
+  [HELLO]  -->  [XOR / FEISTEL / MOD-N]  -->  [7f3a9c2b]
+     ^                                              |
+     |______________ DECRYPT ______________________|
+```
+
+<!-- live key exchange simulation -->
+```
+  Alice                              Bob
+    |                                 |
+    |---- (g^a mod p) -------------> |   Diffie-Hellman
+    |<--- (g^b mod p) --------------- |   Key Exchange
+    |                                 |
+    |==== shared secret: g^ab mod p ==|
+    |                                 |
+    |---- [ AES(msg, secret) ] -----> |   Encrypted Channel
+    |<--- [ AES(reply, secret) ] ---- |
+```
+
+</div>
+
+---
 
 # Cryptography and Network Security  BCSE309L
 
-Socket-based implementations of core cryptographic algorithms, built as part of the BCSE309L course. Each module runs a client-server pair over localhost to demonstrate encryption, decryption, hashing, and digital signatures.
+Socket-based implementations of core cryptographic algorithms built as part of the BCSE309L course. Each module runs a client-server pair over localhost to demonstrate encryption, decryption, hashing, and digital signatures.
 
 ---
 
 ## Modules
+
+### Classical Ciphers  `Basic Ciphers/`  (Java)
+
+| Folder | Cipher | Technique |
+|---|---|---|
+| `Ceaser/` | Caesar | Shift cipher |
+| `Hillcipher/` | Hill | Matrix multiplication mod 26 |
+| `playfair/` | Playfair | 5x5 key square digraph substitution |
+| `railfence/` | Rail Fence | Zigzag transposition |
+| `rowcol/` | Row-Column | Columnar transposition |
+| `vernam/` | Vernam | XOR one-time pad |
+| `vignere/` | Vigenere | Polyalphabetic substitution |
+
+### Modern Crypto  (Python)
 
 | Folder | Algorithm | What it does |
 |---|---|---|
@@ -32,7 +88,7 @@ Socket-based implementations of core cryptographic algorithms, built as part of 
 
 ## How to run
 
-Each module has a `server.py` (or `*Server.py`) and a `client.py` (or `*Client.py`).
+### Python modules
 
 ```bash
 # Terminal 1
@@ -40,6 +96,16 @@ python server.py
 
 # Terminal 2
 python client.py
+```
+
+### Java modules
+
+```bash
+# Terminal 1
+javac Server.java && java Server
+
+# Terminal 2
+javac Client.java && java Client
 ```
 
 Run the server first, then the client. All connections use `localhost`.
@@ -60,8 +126,9 @@ Lecture slides are in `CNS FAT/` covering:
 
 ## Stack
 
-- Python 3
-- `socket`, `hashlib`, `Crypto` / `pycryptodome`
+- Python 3 — `socket`, `hashlib`, `pycryptodome`
+- Java — `java.net.Socket`, `java.io`
 
 ---
 
+**Reg No:** 23BDS1155
